@@ -9,7 +9,6 @@ const cookieParser = require("cookie-parser");
 
 //custom middleware
 const auth = require("./middleware/auth");
-const user = require("./model/user");
 
 //express middlewares
 app.use(express.json());
@@ -28,7 +27,8 @@ app.post("/register", async (req, res) => {
       res.status(400).send("All Fields Required");
     }
     //now check for uniqueEmail
-    const existEmail = await User.findOne(email);
+    const existEmail = await User.findOne({ email });
+
     if (existEmail) {
       res.status(400).send("Email Already Exist");
     }
@@ -72,7 +72,7 @@ app.post("/login", async (req, res) => {
     }
 
     //check if user exist or not in the database
-    const user = await User.findOne(email);
+    const user = await User.findOne({ email });
 
     if (!user) {
       res.status(403).send("Email Not found Please Register");
@@ -101,6 +101,10 @@ app.post("/login", async (req, res) => {
     console.log(error);
     console.log("error in the request");
   }
+});
+
+app.get("/dashboard", auth, (req, res) => {
+  res.status(201).send("Welcome to Dashboard");
 });
 
 module.exports = app;

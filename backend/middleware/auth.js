@@ -19,4 +19,4 @@ const auth = (req, res, next) => {
 
   return next();
 };
-module.export = auth;
+module.exports = auth;
